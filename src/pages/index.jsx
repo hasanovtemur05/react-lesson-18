@@ -6,4 +6,6 @@ import Teacher from "./teacher"
 import Group from "./group"
 import Course from "./course"
 import SignUp from "./sign-up"
-export { SignIn , AdminLayout, StudentLayout, Student, Teacher, Group, Course , SignUp }
+import Category from "./category"
+export { SignIn , AdminLayout, StudentLayout, Student, Teacher, Group, Course , SignUp, Category }
+

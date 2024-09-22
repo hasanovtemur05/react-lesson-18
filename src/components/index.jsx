@@ -7,5 +7,6 @@ import CourseModal from "./course-modal";
 import CourseTable from './course-table';
 import GroupModal from './group-modal'
 import GroupTable from './group-table'
-
-export { TeacherModal, TeacherTable ,StudentTable, StudentModal , CourseModal, CourseTable , GroupModal , GroupTable };
+import CategoryModal from './category-modal'
+import CategoryTable from './catigory-table'
+export { TeacherModal, TeacherTable ,StudentTable, StudentModal , CourseModal, CourseTable , GroupModal , GroupTable, CategoryModal, CategoryTable };

@@ -4,12 +4,11 @@ import { GroupTable, GroupModal } from "@components";
 import Button from "@mui/material/Button";
 
 const Group = () => {
-  const [data, setData] = useState([]); // Guruhlar ro'yxati
-  const [course, setCourse] = useState([]); // Kurslar ro'yxati
-  const [open, setOpen] = useState(false); // Modalni ochish
-  const [editingGroup, setEditingGroup] = useState({}); // Tahrir qilinayotgan guruh
+  const [data, setData] = useState([]);
+  const [course, setCourse] = useState([]); 
+  const [open, setOpen] = useState(false); 
+  const [editingGroup, setEditingGroup] = useState({}); 
 
-  // Guruhlar va kurslar ma'lumotlarini olish uchun useEffect hook
   useEffect(() => {
     axios
       .get("http://localhost:3000/group")
@@ -30,18 +29,16 @@ const Group = () => {
       });
   }, []);
 
-  // Modalni yopish funksiyasi
   const handleClose = () => {
     setOpen(false);
-    setEditingGroup({}); // Modalni yopishda tahrirlanayotgan guruhni tozalash
+    setEditingGroup({}); 
   };
 
-  // Modalni ochish funksiyasi (tahrirlash uchun)
+
   const openModal = () => {
     setOpen(true);
   };
 
-  // Guruhni o'chirish funksiyasi
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/group/${id}`);
@@ -51,7 +48,7 @@ const Group = () => {
     }
   };
 
-  // Tahrirlash tugmachasini bosganda chaqiriladigan funksiyasi
+
   const handleEdit = (id) => {
     const group = data.find((item) => item.id === id);
     setEditingGroup(group);
@@ -67,7 +64,7 @@ const Group = () => {
         setData={setData}
         setOpen={setOpen}
         course={course}
-        editingGroup={editingGroup} // Tahrirlash uchun ma'lumotlarni yuborish
+        editingGroup={editingGroup} 
       />
       <Button variant="contained" sx={{ marginBottom: "20px" }} onClick={openModal}>
         Add Group

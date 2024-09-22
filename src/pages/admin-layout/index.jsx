@@ -13,33 +13,36 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { NavLink, Outlet } from 'react-router-dom';
-import {admin} from "../../router/routs"
-import { ListItemText } from '@mui/material';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import {admin} from "../../router/routs";
+import { ListItemText, Avatar, Tooltip, Menu, MenuItem } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
-
-  const handleDrawerClose = () => {
-    setIsClosing(true);
-    setMobileOpen(false);
-  };
-
-  const handleDrawerTransitionEnd = () => {
-    setIsClosing(false);
-  };
+  const [anchorElUser, setAnchorElUser] = React.useState(null); // For user menu
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
-    if (!isClosing) {
-      setMobileOpen(!mobileOpen);
-    }
+    setMobileOpen(!mobileOpen);
   };
 
-  const {pathname} = useLocation()
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
+  const { pathname } = useLocation();
 
   const drawer = (
     <div>
@@ -47,25 +50,19 @@ function ResponsiveDrawer(props) {
       <Divider />
       <List>
         {admin?.map((item, index) => (
-          <NavLink key={index} to={item.path} className={item.path === pathname ? "block bg-blue-500 text-white": ""}>
+          <NavLink key={index} to={item.path} className={item.path === pathname ? "block bg-blue-500 text-white" : ""}>
             <ListItem disablePadding>
-                <ListItemButton>
-                    <ListItemIcon>
-                    <span className={item.path === pathname ? "text-white": ""}>{item.icon}</span>
-                    </ListItemIcon>
-                    <ListItemText primary={item.content}/>
-                </ListItemButton>
+              <ListItemButton>
+                <ListItemIcon>
+                  <span className={item.path === pathname ? "text-white" : ""}>{item.icon}</span>
+                </ListItemIcon>
+                <ListItemText primary={item.content} />
+              </ListItemButton>
             </ListItem>
-            
-              
-            </NavLink>
-
+          </NavLink>
         ))}
       </List>
       <Divider />
-      <List>
-     
-      </List>
     </div>
   );
 
@@ -81,7 +78,7 @@ function ResponsiveDrawer(props) {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -92,8 +89,45 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-           Teacher
+            Admin Layout
           </Typography>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              <MenuItem>
+                <Typography sx={{ textAlign: 'center' }}>Profile</Typography>
+              </MenuItem>
+              <MenuItem>
+                <Typography sx={{ textAlign: 'center' }}>Account</Typography>
+              </MenuItem>
+              <MenuItem>
+                <Typography sx={{ textAlign: 'center' }}>Dashboard</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box
@@ -101,15 +135,13 @@ function ResponsiveDrawer(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
-          onTransitionEnd={handleDrawerTransitionEnd}
-          onClose={handleDrawerClose}
+          onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, 
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -134,18 +166,13 @@ function ResponsiveDrawer(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Outlet/>
-       
+        <Outlet />
       </Box>
     </Box>
   );
 }
 
 ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
   window: PropTypes.func,
 };
 

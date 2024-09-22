@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Notification from "./../../utils/notification";
 import { ToastContainer } from "react-toastify";
+import { auth } from "@service";
 import { signInvAalidationSchema } from "../../utils/validation";
-import axios from "axios";
 
 
 const Index = () => {
@@ -23,12 +23,13 @@ const Index = () => {
 
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post("https://texnoark.ilyosbekdev.uz/auth/sign-in", values)
-      console.log(response);
+      const response = await auth.sign_in(values)
+      let access_token = response?.data?.data?.tokens?.access_token
+      localStorage.setItem("access_token", access_token)
+      navigate("./admin-layout")
       
     } catch (error) {
       console.log(error);
-      
     }
   
   };

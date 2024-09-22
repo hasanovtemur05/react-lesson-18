@@ -3,12 +3,7 @@ import * as Yup from "yup";
 // ============== AUTH ====================
 export const signInvAalidationSchema = Yup.object().shape({
     phone_number: Yup.string().required("Phone number is required"),
-    password: Yup.string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-        "Password mus be at least 6 characters and contain at least one uppercase and one lowercase letter"
-      )
-      .required("Password is required"),
+    password: Yup.string().required("Password is required"),
   });
 
 
@@ -19,12 +14,7 @@ export const signInvAalidationSchema = Yup.object().shape({
     last_name: Yup.string().required("Last name is required"),
     phone_number: Yup.string().required("Phone number is required"),
     email: Yup.string().email("Email is invalid").required("Email is required"),
-    password: Yup.string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-        "Password mus be at least 6 characters and contain at least one uppercase and one lowercase letter"
-      )
-      .required("Password is required"),
+    password: Yup.string().required("Password is required"),
   });
 
 
